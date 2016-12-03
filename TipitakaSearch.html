@@ -13,13 +13,32 @@ h1  {font-family : tahoma,MS Sans Serif; font-size : 11pt; color : #003333;text-
 h2  {font-family : tahoma,MS Sans Serif; font-size : 11pt; color : gray;text-align : center;}
 .BookHead  {font-family : tahoma,MS Sans Serif; font-size : 11pt; color : #24486C;text-align : left;}
 .Result  {font-family : tahoma,MS Sans Serif; font-size : 11pt; color : blue;text-align : left;}
+#loadingSpan {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index:99;
+}
 </style>
 <TITLE>หน้าค้นพระไตรปิฎก - JS Tipitaka Search engine : โปรแกรมค้นพระไตรปิฎก แบบ javascript</TITLE>
 </HEAD>
 <BODY>
 <div id="load" valign="middle" align="center" style="display:none"></div><input id="standin" value="standin" type="hidden"><br><table align="center" border="0" cellpadding="0" cellspacing="0" width="98%"><tbody><tr><td class="tdmenblock" border="0"></td><td class="tdmenblock" border="0"  width="98%"></td><td class="tdmenblock" border="0" width="1%"></td></tr><tr><td class="tdmenblock" border="0" width="1%">&nbsp;</td><td class="tdmenblock" border="0" width="98%">	<div align="center"><table align="center" border="0" cellpadding="0" cellspacing="0" width="80%"><tbody><tr><td><p align="center"><a href="http://www.satemy.com" target="_parent">   </a></p>
 	</td></tr></tbody></table>
-<table width=100%><tr><td width=95% align=center colspan=3></br>
+<table width=100%><tr><td width=95% align=center colspan=3>
+<span id=loadingSpan>กำลังโหลด...</span>
+<script>
+var $loading = $('#loadingSpan').hide();
+$(document)
+  .ajaxStart(function () {
+    $loading.show();
+  })
+  .ajaxStop(function () {
+    $loading.hide();
+  });
+  </script>
 <form method="POST"  id="ajaxForm">
 <a href=regExp.pdf target=_blank title="วิธีค้นละเอียด (เป็นภาษาอังกฤษ)">[??]</a><label title="กรอกคำที่ต้องการค้นหา" >
 <input onclick='try{kwbox}catch(e){kwbox=1; this.value="";}; ' type="text" name="kw" id=kw value="กรุณากรอกคำค้น" /></label> <input Value="ปาฬิ" type=button onclick=document.getElementById("kw").value+=",ปาฬิ"; /> <input Value="อฏฺฐกถา" type=button onclick=document.getElementById("kw").value+=",ฏฺฐกถา"; /> <input Value="ฏีกา" type=button onclick=document.getElementById("kw").value+=",ฏีกา"; />

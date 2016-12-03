@@ -10257,3 +10257,90 @@ function load(take) {
 	if (tid!=null) {tid.innerHTML=puts;}
 	
 }
+
+function escapeRegExp(str) {
+  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|][NnMmTtDdNnLl]/gi, "\\$&");
+}
+
+function unescapeRegExp(str) {
+  return str.replace(/\\/gi, "");
+}
+
+function paliConv (des) {//pali=บาลีอักษรใดๆ, des=ภาษาเป้าหมาย
+	$("#show").each(function(i){
+		var pali=this.innerHTML.replace(/\<.*?\>|‘|’/gi,"");
+		/*romChars="…pe…|a|a|ā|i|ī|u|ū|e|o|k|kh|g|gh|ṅ|c|ch|j|jh|ñ|ṭ|ṭh|ḍ|ḍh|ṇ|t|th|d|dh|n|p|ph|b|bh|m|y|r|l|v|s|h|ḷ|ṃ";
+		thaChars="ฯเปฯ|ะ|ั|า|ิ|ี|ุ|ู|เ|โ|ก|ข|ค|ฆ|ง|จ|ฉ|ช|ฌ|ญ|ฏ|ฐ|ฑ|ฒ|ณ|ต|ถ|ท|ธ|น|ป|ผ|พ|ภ|ม|ย|ร|ล|ว|ส|ห|ฬ|ํ";
+		devChars="…पे॰…|अ|अ|ा|ि|ी|ु|ू|े|ो|क|ख|ग|घ|ङ|च|छ|ज|झ|ञ|ट|ठ|ड|ढ|ण|त|थ|द|ध|न|प|फ|ब|भ|म|य|र|ल|व|स|ह|ळ|ं";*/
+		romChars="…pe…| a| a| ā| i| ī| u| ū| e| o|a|a|ā|i|ī|u|ū|e|o|kh|k|gh|g|ṅ|ch|c|jh|j|ñ|ṭh|ṭ|ḍh|ḍ|ṇ|th|t|dh|d|n|ph|p|bh|b|m|y|r|l|v|s|h|ḷ|ṃ";
+		thaChars="ฯเปฯ| ะ| ั| า| ิ| ี| ุ| ู| เ| โ|ะ|ั|า|ิ|ี|ุ|ู|เ|โ|ข|ก|ฆ|ค|ง|ฉ|จ|ฌ|ช|ญ|ฐ|ฏ|ฒ|ฑ|ณ|ถ|ต|ธ|ท|น|ผ|ป|ภ|พ|ม|ย|ร|ล|ว|ส|ห|ฬ|ํ";
+		devChars="…पे॰…| अ| अ| आ| इ| ई| उ| ऊ| ए| ओ|अ|अ|ा|ि|ी|ु|ू|े|ो|ख|क|घ|ग|ङ|छ|च|झ|ज|ञ|ठ|ट|ढ|ड|ण|थ|त|ध|द|न|फ|प|भ|ब|म|य|र|ल|व|स|ह|ळ|ं";
+		devvChars="…पे॰…| अ| अ| आ| इ| ई| उ| ऊ| ए| ओ|अ|अ|ा|ि|ी|ु|ू|े|ो|ख|क|घ|ग|ङ|छ|च|झ|ज|ञ|ठ|ट|ढ|ड|ण|थ|त|ध|द|न|फ|प|भ|ब|म|य|र|ल|व|स|ह|ळ|ं";
+		if(des=="tha"){
+			desChars=thaChars;
+		} else if(des=="dev"){
+			desChars=devChars;
+		}else if(des=="devv"){
+			desChars=devvChars;
+		}else if (des=="rom") {
+			desChars=romChars;
+		}
+		//"ĀāĪīŪūṄṅṂṃÑñṬṭḌḍṆṇḶḷ".split("");
+		//เซ็ตแฟล็ก des ว่าภาษาอะไร
+		//แปลงทุกอย่างในรูปแบบไทย แล้วค่อยแปลงจากไทยไปที่ภาษาที่ต้องการ
+		if (pali.search(new RegExp(thaChars))>-1){
+			srcChars=thaChars;
+			pali=pali.replace(//gi, "ฐ")
+			.replace(//gi, "ญ")
+			.replace(/([เโ])(.)/gi, "$2$1")
+			.replace(/([ก-ฮ])/gi, "$1ะ")
+			.replace(/ะ([ะาิีุูเโ])/gi, "$1")
+			.replace(/อ(.)/gi, "$1")
+			.replace(/ะฺ/gi, "")
+			.replace(/อ/gi, "");
+		} else if (pali.search(new RegExp(devChars))>-1){
+			srcChars=devChars;
+			pali=pali.replace(/([क-ह])/gi, "$1अ")
+			.replace(/अ([अािीुूेैो])/gi, "$1")
+			.replace(/अ्/gi, "")
+			//.replace(/(\w)(\w)/gi, "$1्$1");
+		}  else if (pali.search(new RegExp(romChars))>-1){
+			srcChars=romChars;
+		}
+		if (srcChars==desChars) return 0;
+		srcChars=srcChars.split("|");
+		desChars=desChars.split("|");
+		thaChars=thaChars.split("|");
+		//แปลงเป็นไทย
+		for (var i=0;i< thaChars.length;i++) {
+			pali=pali.replace(eval("/"+escapeRegExp(srcChars[i])+"/gi"), thaChars[i]);
+		}
+		pali=pali.replace("]","] ")
+		pali=pali.replace(/ฯ/gi,"ฯ ")
+		//เมื่อเป็น ไทยหมดแล้ว 
+		//เตรียมแปลงจากไทย ไปภาษาเป้าหมาย
+		if (des=="tha") {
+			pali=pali.replace(/([ก-ฮ])([ก-ฮ])/gi, "$1ฺ$2")
+			.replace(/ ([ะาิีุูเโ])/gi, " อ$1")
+			.replace(/([^ะาิีุูเโ])([เโ])/gi, "$2$1")
+			.replace(/ะ/gi, "");
+		} else if (des=="dev") {
+			pali=pali.replace(/([ก-ฮ])([ก-ฮ])/gi, "$1्$2")
+			.replace(/ ะ/gi, " अ")
+			.replace(/ะ/gi, "")
+			.replace(/ฺ/gi, "्");
+		} else if (des=="devv") {
+			pali=pali.replace(/([ก-ฮ])([ก-ฮ])/gi, "$1्$2")
+			.replace(/ ะ/gi, " अ")
+			//.replace(/ะ/gi, "")
+			.replace(/ะ(.)ฺ/gi, "$1्");
+		}
+		//แปลงเป็นภาษาอื่น
+		for (var i=0;i<thaChars.length;i++) {
+			pali=pali.replace(eval("/"+escapeRegExp(thaChars[i])+"/gi"), desChars[i]);
+		}
+		
+		document.getElementById("show").innerHTML=pali;
+	});
+}
+

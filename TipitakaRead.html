@@ -19,16 +19,23 @@ td  {font-family : tahoma,MS Sans Serif; font-size : 14pt; color : #000000;}
 	</td></tr></tbody></table>
 <input type=hidden id=pg >
 <div align=center><table><tr><td ><div align=center class=bd>
-<label title="เปิดหน้าด้านบน-ล่างเพิ่มอีก ตามจำนวนหน้าที่กรอกในช่อง เช่น อยู่ที่ หน้า 10 ต้องการดูตั้งแต่ 9 ถึง 11 ให้กรอก 1 ทั้ง 2 ช่อง แล้วกดปุ่ม 'เพิ่ม'">เปิดเพิ่ม บน: </label><input type=text  size=1 value=0 id=startNum onblur="StartStop(document.getElementById('startNum').value,document.getElementById('stopNum').value,document.getElementById('pg').value);" > ล่าง: <input type=text  size=1 value=0 id=stopNum onblur="StartStop(document.getElementById('startNum').value,document.getElementById('stopNum').value,document.getElementById('pg').value);" > <span id=Menu></span> | <a href=#  onclick='code=document.getElementById("code");code.style.display="";code.innerHTML=document.getElementById("show").innerHTML' ondblclick='code.style.display="none";'>ดูโค้ด</a><br />
+<label title="เปิดหน้าด้านบน-ล่างเพิ่มอีก ตามจำนวนหน้าที่กรอกในช่อง เช่น อยู่ที่ หน้า 10 ต้องการดูตั้งแต่ 9 ถึง 11 ให้กรอก 1 ทั้ง 2 ช่อง แล้วกดปุ่ม 'เพิ่ม'">เปิดเพิ่ม บน: </label><input type=text  size=1 value=0 id=startNum onblur="StartStop(document.getElementById('startNum').value,document.getElementById('stopNum').value,document.getElementById('pg').value);" > ล่าง: <input type=text  size=1 value=0 id=stopNum onblur="StartStop(document.getElementById('startNum').value,document.getElementById('stopNum').value,document.getElementById('pg').value);" > <span id=Menu></span> | <a href=#  onclick='code=document.getElementById("code");code.style.display="";code.innerHTML=document.getElementById("show").innerHTML' ondblclick='code.style.display="none";'>ดูโค้ด</a> | <select name="chChar" onchange="if (this.selectedIndex) paliConv(this[this.selectedIndex].value)">
+    <option value="-1">[แบบอักษร]</option>
+    <option value="tha">ไทย</option> 
+    <option value="rom">โรมัน</option>
+    <option value="dev">เทวนาครี</option>
+    <option value="devv">เทว(เสียง)</option>
+</select><br />
 <textarea  cols=50% rows=10 id=code style="display:none;"></textarea></div>
 <img src=border/stopload.gif onload=load('1');>
+<div id=quote></div>
 <div id=show></div>
 <SCRIPT LANGUAGE="JavaScript">
 data=unescape(self.location.search).slice(1).split("&");
 bn=data[0];
 params=parseInt(data[1])+"&"+data[2]+"&"+data[3]+"&"+data[4]+"&"+parseInt(data[5])+"&"+data[6]+"&"+data[7];
 function StartStop(start,stop,pg) {
-	document.getElementById('Menu').innerHTML="<a href=TipitakaRead.html?"+data[0]+"&"+data[1]+"&"+escape(data[2])+"&"+(parseInt(start))+"&"+(parseInt(stop))+"&"+(parseInt(data[5]))+" >เพิ่ม</a> | <a href=TipitakaRead.html?"+data[0]+"&"+(parseInt(data[1])-1)+"&"+escape(data[2])+"&"+(start)+"&"+(stop)+"&"+(parseInt(data[5])-1)+" >ก่อนหน้า</a> | <a href=TipitakaRead.html?"+data[0]+"&"+(parseInt(data[1])+1)+"&"+escape(data[2])+"&"+(start)+"&"+(stop)+"&"+(parseInt(data[5])+1)+" >ถัดไป</a> | <a href=TipitakaSearch.html >กลับหน้าค้นหา</a>";
+	document.getElementById('Menu').innerHTML="<a href=TipitakaRead.html?"+data[0]+"&"+data[1]+"&"+escape(data[2])+"&"+(parseInt(start))+"&"+(parseInt(stop))+"&"+(parseInt(data[5]))+" >เพิ่ม</a> | <a href=TipitakaRead.html?"+data[0]+"&"+(parseInt(data[1])-1)+"&"+escape(data[2])+"&"+(start)+"&"+(stop)+"&"+(parseInt(data[5])-1)+" >ก่อนหน้า</a> | <a href=TipitakaRead.html?"+data[0]+"&"+(parseInt(data[1])+1)+"&"+escape(data[2])+"&"+(start)+"&"+(stop)+"&"+(parseInt(data[5])+1)+" >ถัดไป</a> | <a href=TipitakaIndex.html?"+data[0]+"&"+data[0]+" >สารบัญ</a> | <a href=TipitakaSearch.html >ค้นหา</a> ";
 	document.getElementById('bottomMenu').innerHTML=document.getElementById('Menu').innerHTML;
 }
 
@@ -66,10 +73,10 @@ function StartStop(start,stop,pg) {
 		var startNum=parseInt(sp[2]);
 		var stopNum=parseInt(sp[3]);
 		var page=parseInt(sp[4])+1;
-		document.getElementById("show").innerHTML+="<div align=right class=td>จาก : <input type=text size=15 id=comefrom value='"+TDBn[bn]+" หน้า "+page+"'/>  <input type=text size=15 id=comefrom value=TipitakaRead.html"+self.location.search+" /></p>";
+		document.getElementById("quote").innerHTML="<div align=right class=td>จาก : <input type=text size=15 id=comefrom value='"+TDBn[bn]+" หน้า "+page+"'/>  <input type=text size=15 id=comefrom value=TipitakaRead.html"+self.location.search+" /></p>";
 </SCRIPT>
 <div id="bottomMenu" align="center" ></div>
-<img src=images/stopload.gif onload=StartStop(0,0); >
+<img src=border/stopload.gif onload=StartStop(0,0); >
 <input type=hidden name=page id=page value="" >
 </td></tr></table></div>
 <table><tbody><tr><td>	</td></tr></tbody></table></td><td class="tdmenblock" width="1%">&nbsp;</td></tr><tr><td class="tdmenblock"  width="1%"></td><td class="tdmenblock" width="98%"></td><td class="tdmenblock"  width="1%"></td></tr></tbody></table>
