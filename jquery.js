@@ -10266,6 +10266,8 @@ function unescapeRegExp(str) {
   return str.replace(/\\/gi, "");
 }
 
+ कथं सुत्वान संवरे पञ्ञा सीलमये ञाणं ञाणं
+
 function paliConv (des) {//pali=บาลีอักษรใดๆ, des=ภาษาเป้าหมาย
 	$("#show").each(function(i){
 		var pali=this.innerHTML.replace(/\<.*?\>|‘|’/gi,"");
@@ -10280,8 +10282,6 @@ function paliConv (des) {//pali=บาลีอักษรใดๆ, des=ภา
 			desChars=thaChars;
 		} else if(des=="dev"){
 			desChars=devChars;
-		}else if(des=="devv"){
-			desChars=devvChars;
 		}else if (des=="rom") {
 			desChars=romChars;
 		}
@@ -10329,11 +10329,6 @@ function paliConv (des) {//pali=บาลีอักษรใดๆ, des=ภา
 			.replace(/ ะ/gi, " अ")
 			.replace(/ะ/gi, "")
 			.replace(/ฺ/gi, "्");
-		} else if (des=="devv") {
-			pali=pali.replace(/([ก-ฮ])([ก-ฮ])/gi, "$1्$2")
-			.replace(/ ะ/gi, " अ")
-			//.replace(/ะ/gi, "")
-			.replace(/ะ(.)ฺ/gi, "$1्");
 		}
 		//แปลงเป็นภาษาอื่น
 		for (var i=0;i<thaChars.length;i++) {
