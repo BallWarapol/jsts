@@ -19,25 +19,25 @@ td  {font-family : tahoma,MS Sans Serif; font-size : 14pt; color : #000000;}
 	</td></tr></tbody></table>
 <input type=hidden id=pg >
 <div align=center><table><tr><td ><div align=center class=bd>
-<label title="เปิดหน้าด้านบน-ล่างเพิ่มอีก ตามจำนวนหน้าที่กรอกในช่อง เช่น อยู่ที่ หน้า 10 ต้องการดูตั้งแต่ 9 ถึง 11 ให้กรอก 1 ทั้ง 2 ช่อง แล้วกดปุ่ม 'เพิ่ม'">เปิดเพิ่ม บน: </label><input type=text  size=1 value=0 id=startNum onblur="StartStop(document.getElementById('startNum').value,document.getElementById('stopNum').value,document.getElementById('pg').value);" > ล่าง: <input type=text  size=1 value=0 id=stopNum onblur="StartStop(document.getElementById('startNum').value,document.getElementById('stopNum').value,document.getElementById('pg').value);" > <span id=Menu></span> | <a href=#  onclick='code=document.getElementById("code");code.style.display="";code.innerHTML=document.getElementById("show").innerHTML' ondblclick='code.style.display="none";'>ดูโค้ด</a> | <select name="chChar" onchange="if (this.selectedIndex) paliConv(this[this.selectedIndex].value)">
+<label title="เปิดหน้าด้านบน-ล่างเพิ่มอีก ตามจำนวนหน้าที่กรอกในช่อง เช่น อยู่ที่ หน้า 10 ต้องการดูตั้งแต่ 9 ถึง 11 ให้กรอก 1 ทั้ง 2 ช่อง แล้วกดปุ่ม 'เพิ่ม'">  </label><input type=text  size=1 value=0 id=startNum onblur="StartStop(document.getElementById('startNum').value,document.getElementById('stopNum').value,document.getElementById('pg').value);" > - <input type=text  size=1 value=0 id=stopNum onblur="StartStop(document.getElementById('startNum').value,document.getElementById('stopNum').value,document.getElementById('pg').value);" > <span id=Menu></span> | <a href=# id=option2 onclick="$(this).hide();$('#option1').show()" title="เลือกจำนวนหนังสือแบบละเอียด" >[+]</a>
+<span id=option1 style="display:none;" ><a href=# onclick="$('#option1').hide();$('#option2').show();" title="ปิดช่องเลือกจำนวนหนังสือแบบละเอียด" >[--]</a><br /><input type=button value='[ออกเสียง]' onclick="paliConv('dev');if($('#show').text().length>5000) {alert('จำนวนตัวอักษร: '+$('#show').text().length);} else { window.location='https://translate.google.com/?source=gtx_m#hi/th/'+$('#show').text().replace(/ /g,'+');}"/> | <select name="chChar" onchange="if (this.selectedIndex) paliConv(this[this.selectedIndex].value);">
     <option value="-1">[แบบอักษร]</option>
     <option value="tha">ไทย</option> 
     <option value="rom">โรมัน</option>
     <option value="dev">เทวนาครี</option>
-</select><br />
-<textarea  cols=50% rows=10 id=code style="display:none;"></textarea></div>
+</select> | <a href=#  onclick='code=document.getElementById("code");code.style.display="";code.innerHTML=document.getElementById("show").innerHTML' ondblclick='code.style.display="none";'>ดูโค้ด</a><br/><textarea  cols=50% rows=10 id=code style="display:none;"></textarea></span>
 <img src=border/stopload.gif onload=load('1');>
 <div id=quote></div>
+</div>
 <div id=show></div>
 <SCRIPT LANGUAGE="JavaScript">
 data=unescape(self.location.search).slice(1).split("&");
 bn=data[0];
-params=parseInt(data[1])+"&"+data[2]+"&"+data[3]+"&"+data[4]+"&"+parseInt(data[5])+"&"+data[6]+"&"+data[7];
+params=parseInt(data[0])+"&"+data[2]+"&"+data[3]+"&"+data[4]+"&"+parseInt(data[5])+"&"+data[6]+"&"+data[7];
 function StartStop(start,stop,pg) {
-	document.getElementById('Menu').innerHTML="<a href=TipitakaRead.html?"+data[0]+"&"+data[1]+"&"+escape(data[2])+"&"+(parseInt(start))+"&"+(parseInt(stop))+"&"+(parseInt(data[5]))+" >เพิ่ม</a> | <a href=TipitakaRead.html?"+data[0]+"&"+(parseInt(data[1])-1)+"&"+escape(data[2])+"&"+(start)+"&"+(stop)+"&"+(parseInt(data[5])-1)+" >ก่อนหน้า</a> | <a href=TipitakaRead.html?"+data[0]+"&"+(parseInt(data[1])+1)+"&"+escape(data[2])+"&"+(start)+"&"+(stop)+"&"+(parseInt(data[5])+1)+" >ถัดไป</a> | <a href=TipitakaIndex.html?"+data[0]+"&"+data[0]+" >สารบัญ</a> | <a href=TipitakaSearch.html >ค้นหา</a> ";
+	document.getElementById('Menu').innerHTML="<a href=TipitakaRead.html?"+data[0]+"&"+data[1]+"&"+escape(data[2])+"&"+(parseInt(start))+"&"+(parseInt(stop))+"&"+(parseInt(data[5]))+" >เพิ่ม</a> | <a href=TipitakaRead.html?"+data[0]+"&"+(parseInt(data[1])-1)+"&"+escape(data[2])+"&"+(start)+"&"+(stop)+"&"+(parseInt(data[5])-1)+" >ก่อนนี้</a> | <a href=TipitakaRead.html?"+data[0]+"&"+(parseInt(data[1])+1)+"&"+escape(data[2])+"&"+(start)+"&"+(stop)+"&"+(parseInt(data[5])+1)+" >ถัดไป</a> | <a href=TipitakaIndex.html?"+data[0]+"&"+data[0]+" >สารบัญ</a> | <a href=TipitakaSearch.html >ค้นหา</a> ";
 	document.getElementById('bottomMenu').innerHTML=document.getElementById('Menu').innerHTML;
 }
-
 		//var params = $(this).find("input, select, textarea").serialize(); // ทำการ get ค่าจาก input ทุกประเภท
 		var URL ='utf/'+bn+'.t'; // ดึงค่า target ออกมา
 		$.ajax({
@@ -62,7 +62,8 @@ function StartStop(start,stop,pg) {
 				data=data.split("\n");
 				for(var j=0;j<data.length;j++) {
 					if(j==page || (j>=(page-startNum) && j<=page+stopNum)) {
-						document.getElementById("show").innerHTML+="<p class='bodytext'>"+data[j].replace(kw,"<b><u>"+kw+"</u></b>");
+						document.getElementById("show").innerHTML+="<label title='page "+(j+1)+"'><p class='bodytext' >"+data[j].replace(kw,"<b><u>"+kw+"</u></b>")+"</label>";
+						try{hasTitle} catch(e){document.title=TDBn[bn]+' '+(j-startNum+1)+"-"+(j+stopNum+1)+' ปณฺณปสฺเส';hasTitile=true;}
 					}
 				}
 			}
