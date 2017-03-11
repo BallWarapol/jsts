@@ -159,6 +159,19 @@ bf=bf.split(",");
 				for( var y = parseInt(params[2]); y <= parseInt(params[3]); ++y ) 
 					slist.push(y);
 			}
+			//ทำ kwReg
+			if(kw[0]!='"') {
+				var y=kw.split(" ");
+				var kwReg="^";
+				for(k=0;k<y.length;k++) {
+					kwReg+="(?=.*"+y[k]+")";
+				}
+				kwReg = new RegExp(kwReg, 'gi');
+				kw=y[0];
+			} else {
+				var kwReg=kw.replace(/"/ig,'');
+				kw=kwReg;
+			}
 			//สองตัวนี้ เอาไว้กัน err เฉยๆ รอเคลียโค้ด กับทำ query string เป็น cmd=value1;value2;value3 
 			BeginBook=1;
 			FinishBook=1;
@@ -169,7 +182,7 @@ bf=bf.split(",");
 					alc=1;
 					break;
 				}
-				params=kw+"&"+FinishBook+"&"+BeginBook+"&"+slist[i];
+				params=kw+"&"+FinishBook+"&"+BeginBook+"&"+slist[i]+"&"+kwReg;
 				var URL ='utf/'+slist[i]+'.t'; // ดึงค่า target ออกมา
 				$.ajax({
 					type: "POST", // จะใช้ GET ก็ได้
@@ -192,12 +205,12 @@ bf=bf.split(",");
 						var dt='';var term=0;
 						for (var j=0;j<data.length ;j++ ){
 							co=j;
-							if (data[j].search(kw)>-1) {
+							data[j]=data[j].trim().replace(/<(?:.|\n)*?>/gm, '').replace(/ *?/g, ' ');
+							if (data[j].search(kwReg)>-1) {
 							   if (term==0) {
 								   document.getElementById("show").innerHTML+="<br><div align=left class=BookHead > <b>"+TDBn[bn]+"</b>";
 								   term++;
 							   }
-							   data[j]=data[j].trim().replace(/<.*?>/ig," ");
 								zIndex=data[j].indexOf(kw);
 								zStart=(zIndex<40) ? zIndex : zIndex-40;
 								zStop=((data[j].length-zIndex)<40) ? zIndex+kw.length : zIndex+40;
