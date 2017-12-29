@@ -10219,6 +10219,11 @@ if ( !noGlobal ) {
 return jQuery;
 } );
 
+String.prototype.rsplit = function(sep, maxsplit) {
+    var split = this.split(sep);
+    return maxsplit ? [ split.slice(0, -maxsplit).join(sep) ].concat(split.slice(-maxsplit)) : split;
+}
+
 String.prototype.trim = function () {
 	var l = /^\s+(.*?)/;
 	var r = /(.*?)\s+$/;
@@ -10332,7 +10337,18 @@ function paliConv (des) {//pali=บาลีอักษรใดๆ, des=ภา
 			pali=pali.replace(eval("/"+escapeRegExp(thaChars[i])+"/gi"), desChars[i]);
 		}
 		
-		document.getElementById("show").innerHTML=pali;
+		document.getElementById("show").innerHTML=pali.replace(/ฯ/gi, ".");
 	});
 }
 
+//ยังไม่เสร็จ พลาดตรงไหนไม่รู้
+var curTitle="";
+var curPageTitle="";
+var titleRegex=/title|nikaya|book|chapter|subhead|subsubhead|\<h/ig
+function getTitle (page) {
+	if (page.search(titleRegex)) {
+		curTitle=page.rsplit(titleRegex,1)[1].split("<")[0];
+		console.log(curTitle)
+	}
+		
+}

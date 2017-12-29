@@ -113,6 +113,7 @@ bf=bf.split(",");
 			//ถ้าไม่ได้ใส่แค่คำค้น
 			if (cmd.indexOf(",")>-1 || cmd[0]=="-") {
 				if(cmd[0]=="-"){
+					var kw="nokw";
 					//หาชื่อหนังสือ
 					if(cmd[1].search(/[ก-ฮA-Za-z]/gi)>-1) {
 						indexMaker();

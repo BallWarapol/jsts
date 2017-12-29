@@ -25,7 +25,7 @@ td  {font-family : tahoma,MS Sans Serif; font-size : 14pt; color : #000000;}
     <option value="tha">ไทย</option> 
     <option value="rom">โรมัน</option>
     <option value="dev">เทวนาครี</option>
-</select> | <a href=#  onclick='code=document.getElementById("code");code.style.display="";code.innerHTML=document.getElementById("show").innerHTML' ondblclick='code.style.display="none";'>ดูโค้ด</a> | <a href="tools/paliThaiRoman.html" target=_blank >Convertor</a><br/><textarea  cols=50% rows=10 id=code style="display:none;"></textarea></span>
+</select> | <a href=#  onclick='code=document.getElementById("code");code.style.display="";code.innerHTML=document.getElementById("show").innerHTML' ondblclick='code.style.display="none";'>ดูโค้ด</a> | <a href="tools/paliThaiRoman.html" target=_blank >Convertor</a> | <a href="tools/accesstoinsight.org/start.html" target=_blank >TPK Eng</a><br/><textarea  cols=50% rows=10 id=code style="display:none;"></textarea></span>
 <img src=border/stopload.gif onload=load('1');>
 <div id=quote></div>
 </div>
@@ -61,9 +61,11 @@ function StartStop(start,stop,pg) {
 				//var HLE=(sp[6].length==0)? "NoHLE":sp[6];
 				data=data.split("\n");
 				for(var j=0;j<data.length;j++) {
+					//getTitle(data[j]);
 					if(j==page || (j>=(page-startNum) && j<=page+stopNum)) {
 						document.getElementById("show").innerHTML+="<label title='page "+(j+1)+"'><p class='bodytext' >"+data[j].replace(kw,"<b><u>"+kw+"</u></b>")+"</label>";
-						try{hasTitle} catch(e){document.title=TDBn[bn]+' '+(j-startNum+1)+"-"+(j+stopNum+1)+' ปณฺณปสฺเส';hasTitile=true;}
+						try{hasTitle} catch(e){document.title=TDBn[bn]+' '+(j-startNum+1)+"-"+(j+stopNum+1)+' ปณฺณปสฺเส '+curTitle;hasTitile=true;}
+						curPageTitle=curTitle;
 					}
 				}
 			}
@@ -72,8 +74,8 @@ function StartStop(start,stop,pg) {
 		var bn=parseInt(sp[0]);
 		var startNum=parseInt(sp[2]);
 		var stopNum=parseInt(sp[3]);
-		var page=parseInt(sp[4])+1;
-		document.getElementById("quote").innerHTML="<div align=right class=td>จาก : <input type=text size=15 id=comefrom value='"+TDBn[bn]+" หน้า "+page+"'/>  <input type=text size=15 id=comefrom value=TipitakaRead.html"+self.location.search+" /></p>";
+		var page=parseInt(data[5])+1;
+		document.getElementById("quote").innerHTML="<div align=right class=td>จาก : <input type=text size=30 style='text-align:right' id=comefrom value='"+TDBn[bn]+" หน้า "+page+" "+curPageTitle+"'/>  <input type=text size=15 id=comefrom value=TipitakaRead.html"+self.location.search+" /></p>";
 </SCRIPT>
 <div id="bottomMenu" align="center" ></div>
 <img src=border/stopload.gif onload=StartStop(0,0); >
