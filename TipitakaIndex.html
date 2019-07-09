@@ -1,0 +1,85 @@
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="border/cssconfig.css" rel="stylesheet" type="text/css">
+<SCRIPT LANGUAGE="JavaScript" src=jquery.js ></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" src=TipitakaDetail.js ></SCRIPT>
+<style type="text/css">
+body {  margin: 0px  0px; padding: 0px  0px }
+body  {font-family :  tahoma,MS Sans Serif; font-size : 11pt; color : #000000;}
+td {  margin: 0px  0px; padding: 0px  0px }
+td  {font-family : tahoma,MS Sans Serif; font-size : 11pt; color : #000000;}
+h1  {font-family : tahoma,MS Sans Serif; font-size : 11pt; color : #003333;text-align : center;}
+h2  {font-family : tahoma,MS Sans Serif; font-size : 11pt; color : gray;text-align : center;}
+.BookHead  {font-family : tahoma,MS Sans Serif; font-size : 11pt; color : #24486C;text-align : center;}
+.Result  {font-family : tahoma,MS Sans Serif; font-size : 11pt; color : blue;text-align : left;}
+</style>
+<TITLE>หน้าค้นพระไตรปิฎก - JS Tipitaka Search engine : โปรแกรมค้นพระไตรปิฎก แบบ javascript</TITLE>
+</HEAD>
+<BODY>
+<div id="load" valign="middle" align="center" style="display:none"></div><input id="standin" value="standin" type="hidden"><br><table align="center" border="0" cellpadding="0" cellspacing="0" width="98%"><tbody><tr><td class="tdmenblock" border="0"></td><td class="tdmenblock" border="0"  width="98%"></td><td class="tdmenblock" border="0" width="1%"></td></tr><tr><td class="tdmenblock" border="0" width="1%">&nbsp;</td><td class="tdmenblock" border="0" width="98%">	<div align="center"><table align="center" border="0" cellpadding="0" cellspacing="0" width="80%"><tbody><tr><td><p align="center"><a href="http://www.satemy.com" target="_parent">   </a></p>
+	</td></tr></tbody></table>
+<table width=100%><tr><td width=95% align=center colspan=3></br><a href=TipitakaSearch.html >กลับหน้าค้นหา</a><input type="button" title="ดูสารบัญเล่ม" value="สารบัญเล่ม" onclick=indexMaker(); />
+</td></tr><tr><td width=12%></td><td><div id=show class=Result></div>
+<script type="text/javascript">
+
+//สำหรับเปิดโดยค้นจาก ควอรี่สตริง
+if (self.location.search.length>1) {
+			params=unescape(self.location.search).replace('?','').split("&");
+			BeginBook=parseInt(params[1]);
+			FinishBook=BeginBook;
+			params=params.join("&");
+			for (var i1=BeginBook;i1<=FinishBook ;i1++ ) {
+			if (params=="" && alc==0) {
+			alert("ท่านยังไม่ได้กรอกคำค้น");
+			alc=1;
+			break;
+			}
+			var URL ='utf/'+i1+'.t'; // ดึงค่า target ออกมา
+	$.ajax({
+					type: "POST", // จะใช้ GET ก็ได้
+					url: URL, // ส่งค่าที่ get มาในที่นี้คือ target.php
+					dataType: "text", // ตรงนี้รับค่าคืนเป็นอะไรซึ่งรับได้หลายชนิดมากๆ ไปอ่าน manual เอา
+								data: params,
+					cache: false, //สั่งให้ get ค่าที่สดใหม่เสมอไม่ต้องการ browser cache (jQuery 1.2)
+					error: function() { // ถ้าเกิด error ขึ้น
+						alert('ผิดพลาดบางประการ');
+					},
+					success: function(data) { // ถ้าทำเสร็จจะได้ค่าคืนมา (กรณีมี)
+					params=params.split('&');
+					bn=parseInt(params[0]);
+					BeginBook=params[2];
+					FinishBook=BeginBook;
+					
+					params=BeginBook;
+					var paramsx=params;
+					if (CountBook==undefined) {var CountBook=FinishBook;} CountBook++;
+					data=data.split("\n");
+					lastSutta=0;
+					for(var j=0;j<data.length;j++){
+						//ช้ามาก อย่าใช้
+						var p=data[j].split(/\<\/p\>|\<br\/\>/gi);
+						for (var k=1;k<p.length ;k++ ){
+							if (p[k].search(/title|nikaya|book|chapter|subhead|subsubhead|\<h/ig)>-1) {
+								if ( j>0)
+									document.getElementById("show").innerHTML+="<a target=_blank href=TipitakaRead.html?"+bn+"&"+j+"&"+escape('nokw')+"&"+(j-lastSutta)+"&0&"+j+" >[ทั้งสูตร]</a> ";
+								document.getElementById("show").innerHTML+="<br/>"+p[k].replace(/<.*?>/ig,"")+" <a target=_blank href=TipitakaRead.html?"+bn+"&"+j+"&"+escape('nokw')+"&0&0&"+j+" >[หน้าแรก]</a> ";
+								lastSutta=j;
+							}
+						}
+					}
+				}
+			});
+}
+document.getElementById("show").innerHTML+="<p align=right class=td>จาก :-  <input type=text size=15 value=TipitakaSearch.html?"+escape(params)+" /></p>";
+}
+else {
+     indexMaker();
+}
+//จบค้นจากควอรี่สตริง
+
+</script>
+</td><td width=12%></td></tr></table>
+<table><tbody><tr><td>	</td></tr></tbody></table></td><td class="tdmenblock" width="1%">&nbsp;</td></tr><tr><td class="tdmenblock"  width="1%"></td><td class="tdmenblock" width="98%"></td><td class="tdmenblock"  width="1%"></td></tr></tbody></table>
+</BODY>
+</HTML>

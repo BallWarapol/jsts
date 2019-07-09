@@ -1,0 +1,128 @@
+<HTML>
+<HEAD>
+<TITLE>หน้าอ่านพระไตรปิฎก - JS Tipitaka Search engine : โปรแกรมค้นพระไตรปิฎก แบบ javascript</TITLE>
+<link href="border/cssconfig.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<SCRIPT LANGUAGE="JavaScript" src=jquery.js ></SCRIPT>
+<style type="text/css">
+body {  margin: 0px  0px; padding: 0px  0px }
+body  {font-family : tahoma,MS Sans Serif; font-size : 10pt; color : #000000;}
+.bd  {font-family : tahoma,MS Sans Serif; font-size : 10pt; color : #000000;}
+td {  margin: 0px  0px; padding: 0px  0px }
+td  {font-family : tahoma,MS Sans Serif; font-size : 14pt; color : #000000;}
+h1  {font-family : tahoma,MS Sans Serif; font-size : 14pt; color : #003333;text-align : center;}
+h2  {font-family : tahoma,MS Sans Serif; font-size : 14pt; color : #003333;text-align : center;}
+.BookHead  {font-family : tahoma,MS Sans Serif; font-size : 14pt; color : #24486C;text-align : center;}
+.footnote  {font-family : tahoma,MS Sans Serif; font-size : 10pt; color : darkviolet;text-align : center;}
+</style>
+</HEAD>
+<BODY>
+<div id="load" valign="middle" align="center" style="display:none"></div><input id="standin" value="standin" type="hidden"><br><table align="center" border="0" cellpadding="0" cellspacing="0" width="98%"><tbody><tr><td class="tdmenblock" border="0"><img src="border/tl.png" class="tdmenblock" align="left" border="0"></td><td class="tdmenblock" border="0" background="border/tm.png" width="98%"></td><td class="tdmenblock" border="0" width="1%"><img class="tdmenblock" src="border/tr.png" border="0"></td></tr><tr><td class="tdmenblock" border="0" background="border/l.png" width="1%">&nbsp;</td><td class="tdmenblock" border="0" width="98%">	<div align="center"><table align="center" border="0" cellpadding="0" cellspacing="0" width="80%"><tbody><tr><td><p align="center"><a href="http://www.satemy.com" target="_parent"><img src="border/head.gif" border="no"> </a></p>
+	</td></tr></tbody></table>
+<input type=hidden id=pg >
+<div align=center><table><tr><td ><div align=center class=bd>
+<label title="เปิดหน้าด้านบน-ล่างเพิ่มอีก ตามจำนวนหน้าที่กรอกในช่อง เช่น อยู่ที่ หน้า 10 ต้องการดูตั้งแต่ 9 ถึง 11 ให้กรอก 1 ทั้ง 2 ช่อง แล้วกดปุ่ม 'เพิ่ม'">เปิดเพิ่ม บน: </label><input type=text  size=1 value=0 id=startNum onblur="StartStop(document.getElementById('startNum').value,document.getElementById('stopNum').value,document.getElementById('pg').value);" > ล่าง: <input type=text  size=1 value=0 id=stopNum onblur="StartStop(document.getElementById('startNum').value,document.getElementById('stopNum').value,document.getElementById('pg').value);" > <span id=Menu></span> | <a href=#  onclick='code=document.getElementById("code");code.style.display="";code.innerHTML=document.getElementById("show").innerHTML' ondblclick='code.style.display="none";'>ดูโค้ด</a><br />
+<textarea  cols=50% rows=10 id=code style="display:none;"></textarea></div>
+<img src=border/stopload.gif onload=load('1');>
+<div id=show></div>
+<SCRIPT LANGUAGE="JavaScript">
+data=unescape(self.location.search).slice(1).split("&");
+bn=data[0];
+params=parseInt(data[1])+"&"+data[2]+"&"+data[3]+"&"+data[4]+"&"+parseInt(data[5])+"&"+data[6]+"&"+data[7];
+function StartStop(start,stop,pg) {
+	document.getElementById('Menu').innerHTML="<a href=TipitakaRead.html?"+data[0]+"&"+data[1]+"&"+escape(data[2])+"&"+(parseInt(start))+"&"+(parseInt(stop))+"&"+(parseInt(data[5]))+" >เพิ่ม</a> | <a  onclick=marker(); >เน้น </a> | <a href=TipitakaRead.html?"+data[0]+"&"+(parseInt(data[1])-1)+"&"+escape(data[2])+"&"+(start)+"&"+(stop)+"&"+(parseInt(data[5])-1)+" >ก่อนหน้า</a> | <a href=TipitakaRead.html?"+data[0]+"&"+(parseInt(data[1])+1)+"&"+escape(data[2])+"&"+(start)+"&"+(stop)+"&"+(parseInt(data[5])+1)+" >ถัดไป</a> | <a href=TipitakaSearch.html >กลับหน้าค้นหา</a>";
+}
+function marker() {
+	if (typeof document.getElementById('startNum').value =="string" && typeof document.getElementById('stopNum').value =="string") {
+		var startt=escape(document.getElementById('startNum').value);
+		var stopt=escape(document.getElementById('stopNum').value);
+		var sp=self.location.search.split("&");
+		if (sp.length<=6){
+			sp=sp.join("&")+"&"+startt+"&"+stopt;
+		}
+		else {
+			delete sp[6];delete sp[7];
+			sp=sp.join("&")+"&"+startt+"&"+stopt;
+
+			}
+		self.location.href="TipitakaRead.html"+sp;
+
+	}
+}
+		//var params = $(this).find("input, select, textarea").serialize(); // ทำการ get ค่าจาก input ทุกประเภท
+		var URL ='utf/'+bn+'.t'; // ดึงค่า target ออกมา
+		$.ajax({
+			type: "POST", // จะใช้ GET ก็ได้
+			url: URL, // ส่งค่าที่ get มาในที่นี้คือ target.php
+			dataType: "text", // ตรงนี้รับค่าคืนเป็นอะไรซึ่งรับได้หลายชนิดมากๆ ไปอ่าน manual เอา
+                        data: params,
+			cache: false, //สั่งให้ get ค่าที่สดใหม่เสมอไม่ต้องการ browser cache (jQuery 1.2)
+			error: function() { // ถ้าเกิด error ขึ้น
+				alert('ผิดพลาดบางประการ');
+			},
+			success: function(data) { // ถ้าทำเสร็จจะได้ค่าคืนมา (กรณีมี)
+			data=data.toLowerCase();
+			var sp=params.split("&");
+			sp[0]=parseInt(sp[0]);
+			var startNum=parseInt(sp[2]);
+			var stopNum=parseInt(sp[3]);
+			var page=parseInt(sp[4]);
+			var HLB=(sp[5].length==0)? "NoHLB":sp[5];
+			var HLE=(sp[6].length==0)? "NoHLE":sp[6];
+
+				data=data.split("\n");
+				var dt=new Array;var i3=0;var num;var pg=0;
+				for (var i2=0;i2<data.length ;i2++ ){
+						if (data[i2].indexOf('sp1')>-1) {
+							pg++;
+							dt[pg]=data[i2];
+						}
+						else {dt[pg]+=data[i2];}
+						/*if (sp[0]==i2 &&page=="" ) {
+						var page=pg;
+						}*/
+				}
+				if (startNum=="") {
+				var startNum=0;
+				}
+				if (stopNum=="") {
+				var stopNum=0;
+				}
+
+				pg=page+(-startNum);
+				var stop=page+stopNum;
+				document.getElementById('pg').value=page;
+				for (var z=1;z<dt.length;z++) {
+					if (z>=pg && z <=stop) {
+					dt[z]=dt[z].split('</sp2/>');
+					dt[z][1]=dt[z][1].replaceall("</h1><sup>๑</sup>","<sup>๑</sup></h1>");
+					dt[z][1]=dt[z][1].replaceall('[<',"<").replaceall('>]',">").replaceall('> ]',">").replaceall('> ]',">");
+					if (z==pg) {
+					if (bn<=91) {
+					dt[z][0]=dt[z][0].split("ฯ");
+					dt[z][0]=dt[z][0][0]+"ฯ <br>หน้า "+pg+" "+dt[z][0][1];
+					}
+						dt[z]="<div align=center class=BookHead ><b>"+dt[z][0]+"</b></div>"+dt[z][1].rtrim()+"";
+
+					}
+					else {
+						dt[z]=dt[z][1].rtrim();
+					}
+					if (HLB!="NoHLB" && typeof zx=="undefined") {
+						dt[z]=dt[z].replace(HLB,"<u>"+HLB+"").replace(HLE,""+HLE+"</u>"); var zx=1;
+					}
+					document.getElementById('show').innerHTML+="<pre>"+dt[z].replaceall('€','ฐ').replaceall('','ญ').replaceall('ุํ','ตุ<i>ํ</i>').replaceall('ิํ','ึ').replace(sp[1],"<a name="+sp[1]+" id="+sp[1]+" ></a><u><b>"+sp[1]+"</b></u>");
+					}
+				}
+				//document.getElementById('show').innerHTML+="<img src=border/stopload.gif onload=load('0');>";
+
+			}
+		});
+		document.getElementById("show").innerHTML+="<p align=right class=td>จาก :-  <input type=text size=15 id=comefrom value=TipitakaRead.html"+self.location.search+" /></p>";
+</SCRIPT>
+<img src=images/stopload.gif onload=StartStop(0,0); >
+<input type=hidden name=page id=page value="" >
+</td></tr></table></div>
+<table><tbody><tr><td>	</td></tr></tbody></table></td><td class="tdmenblock" border="0" background="border/lx.png" width="1%">&nbsp;</td></tr><tr><td class="tdmenblock" border="0" width="1%"><img src="border/br.png" class="tdmenblock" border="0"></td><td class="tdmenblock" border="0" background="border/bm.png" width="98%"></td><td class="tdmenblock" border="0" width="1%"><img class="tdmenblock" src="border/bl.png" border="0"></td></tr></tbody></table>
+</BODY>
+</HTML>

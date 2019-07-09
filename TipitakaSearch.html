@@ -1,0 +1,359 @@
+﻿<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<link href="border/cssconfig.css" rel="stylesheet" type="text/css">
+<SCRIPT LANGUAGE="JavaScript" src=jquery.js ></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" src=TipitakaDetail.js ></SCRIPT>
+<style type="text/css">
+body {  margin: 0px  0px; padding: 0px  0px }
+body  {font-family :  tahoma,MS Sans Serif; font-size : 11pt; color : #000000;}
+td {  margin: 0px  0px; padding: 0px  0px }
+td  {font-family : tahoma,MS Sans Serif; font-size : 11pt; color : #000000;}
+h1  {font-family : tahoma,MS Sans Serif; font-size : 11pt; color : #003333;text-align : center;}
+h2  {font-family : tahoma,MS Sans Serif; font-size : 11pt; color : gray;text-align : center;}
+.BookHead  {font-family : tahoma,MS Sans Serif; font-size : 11pt; color : #24486C;text-align : left;}
+.Result  {font-family : tahoma,MS Sans Serif; font-size : 11pt; color : blue;text-align : left;}
+#loadingSpan {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index:99;
+}
+.trick {
+  -webkit-column-count: 4; /* Chrome, Safari, Opera */
+  -moz-column-count: 4; /* Firefox */
+  column-count: 4;
+}
+</style>
+<TITLE>หน้าค้นพระไตรปิฎก - JS Tipitaka Search engine : โปรแกรมค้นพระไตรปิฎก แบบ javascript</TITLE>
+</HEAD>
+<BODY>
+<div id="load" valign="middle" align="center" style="display:none"></div><input id="standin" value="standin" type="hidden"><br><table align="center" border="0" cellpadding="0" cellspacing="0" width="98%"><tbody><tr><td class="tdmenblock" border="0"></td><td class="tdmenblock" border="0"  width="98%"></td><td class="tdmenblock" border="0" width="1%"></td></tr><tr><td class="tdmenblock" border="0" width="1%">&nbsp;</td><td class="tdmenblock" border="0" width="98%">	<div align="center"><table align="center" border="0" cellpadding="0" cellspacing="0" width="80%"><tbody><tr><td><p align="center"><a href="http://www.satemy.com" target="_parent">   </a></p>
+	</td></tr></tbody></table>
+<table width=100%><tr><td width=95% align=center colspan=3>
+<span id=loadingSpan>กำลังโหลด...</span>
+<script>
+var $loading = $('#loadingSpan').hide();
+$(document)
+  .ajaxStart(function () {
+    $loading.show();
+  })
+  .ajaxStop(function () {
+    $loading.hide();
+  });
+  </script>
+<form method="POST"  id="ajaxForm">
+<a href=# id=option4 onclick="$(this).hide();$('#option3').show()" title="วิธีค้นละเอียด (เป็นภาษาอังกฤษ)">[?]</a><span id=option3 style="display:none;" ><a href=# onclick="$('#option3').hide();$('#option4').show();" title="ปิดช่องเลือกจำนวนหนังสือแบบละเอียด" >[--]</a><br /><b>ตัวอย่างการใช้งาน:</b><br>
+	<div align="left" class=trick>
+	<li><a href="#" onclick='$("#cmd").val(this.innerText);'>อายสฺมา อุปาลิ,ปาฬิ</a>
+	<li><a href="#" onclick='$("#cmd").val(this.innerText)'>สติปฏฺฐานสุตฺต,ฏฺฐกถา</a>
+	<li><a href="#" onclick='$("#cmd").val(this.innerText)'>สติปฏฺฐานสุตฺ.ต,ฏฺฐกถา</a>
+	<li><a href="#" onclick='$("#cmd").val(this.innerText)'>สติปฏฺฐานสุตฺ.?ต,ฏฺฐกถา</a>
+	<li><a href="#" onclick='$("#cmd").val(this.innerText)'>"อายสฺมา อุปาลิ",ปาฬิ</a>
+	<li><a href="#" onclick='$("#cmd").val(this.innerText)'>"อายสฺมา อุปาลิ",ฏฺฐกถา</a>
+	<li><a href="#" onclick='$("#cmd").val(this.innerText)'>"อายสฺมา อุปาลิ",ปริวา ฏฺฐกถา</a>
+	<li><a href="#" onclick='$("#cmd").val(this.innerText)'>"อายสฺมา อุปาลิ",ฏีกา</a>
+    <li><a href="#" onclick='$("#cmd").val(this.innerText)'>"อายสฺมา อุปาลิ",5</a>
+	<li><a href="#" onclick='$("#cmd").val(this.innerText)'>"อายสฺมา อุปาลิ",1-5</a>
+	<li><a href="#" onclick='$("#cmd").val(this.innerText)'>"อายสฺมา อุปาลิ",1-25,40-70,75</a>
+	<li><a href="#" onclick='$("#cmd").val(this.innerText)'>-5</a>
+	<li><a href="#" onclick='$("#cmd").val(this.innerText)'>-5/5</a>
+	<li><a href="#" onclick='$("#cmd").val(this.innerText)'>-วิสุทฺธิ</a>
+	</div>
+	</span>
+<label title="กรอกคำที่ต้องการค้นหา" >
+<input onclick='try{kwbox}catch(e){kwbox=1; this.value="";}; ' type="text" name="cmd" id=cmd value="พิมพ์คำค้นที่นี่" /></label> <input type="submit" value="เริ่มค้น"  />  <input Value="ปาฬิ" type=button onclick=document.getElementById("cmd").value+=",ปาฬิ"; /> <input Value="อฏฺฐกถา" type=button onclick=document.getElementById("cmd").value+=",ฏฺฐกถา"; /> <input Value="ฏีกา" type=button onclick=document.getElementById("cmd").value+=",ฏีกา"; /> <a href=# id=option2 onclick="$(this).hide();$('#option1').show()" title="ตัวเลือกเพิ่มเติม" >[+]</br></br></a>
+<span id=option1 style="display:none;" ><a href=# onclick="$('#option1').hide();$('#option2').show();" title="ปิดช่องเลือกจำนวนหนังสือแบบละเอียด" >[--]</a><br /><SELECT NAME="sbf" id=sbf onchange='sbffu(document.forms[0].sbf.options[document.forms[0].sbf.selectedIndex].value);' title="เลือกกลุ่มเล่มที่ต้องการค้นหา">
+<OPTION value="366,393"; >4 นิกายแรก [11-38]</OPTION>
+<OPTION value="356,456"; >ทุกเล่มในระบบ(ช้า-ไม่แนะนำ)</OPTION>
+<OPTION value="356,446"; >+พระไตรปิฎก-อรรถกถา [1-91](ช้า-ไม่แนะนำ)</OPTION>
+<OPTION value="356,365"; >-พระวินัย [1-10]</OPTION>
+<OPTION value="366,429"; >-พระสูตร [11-74]</OPTION>
+<OPTION value="430,446"; >-พระอภิธรรม [75-91]</OPTION>
+<OPTION value="394,429"; >-ขุททกนิกาย [39-74]</OPTION>
+<OPTION value="447,456"; >+อื่นๆ [92-101]</OPTION>
+<OPTION value="447,453"; >-มิลินทปัญหา-วิสุทธิมรรค [92-98]</OPTION>
+<OPTION value="454,456"; >-สังคหะ-บุพพสิกขา-พุทธธรรม [99-101]</OPTION>
+</SELECT> 
+<SELECT NAME="BeginBook" id="BeginBook" >
+		<script>
+		for (i=1;i<=609 ;i++ ) {
+		var selected="";
+		if (i==355+11) selected=" selected=selected ";
+			document.write("<option value="+i+" "+selected+" >"+i+"</option>");//ต้องลบหนึ่ง ไม่เช่นนั้น จะค้นขาดไป1เล่ม
+		}
+		</script>
+		</SELECT>
+		 -
+		<SELECT NAME="FinishBook" id="FinishBook" >
+		<script>
+		for (i=1;i<=609 ;i++ ) {
+		var selected="";
+		if (i==355+38) selected=" selected=selected ";
+		document.write("<option value="+i+" "+selected+" >"+i+"</option>");
+		}
+		</script>
+</SELECT>
+<input type="checkbox" name="paraMode" id="paraMode"/> แสดงผลแบบย่อหน้า</br>
+</span>
+
+<script>
+function sbffu(bf) {
+bf=bf.split(",");
+	document.getElementById('BeginBook').selectedIndex=(bf[0]-1);document.getElementById('FinishBook').selectedIndex=(bf[1]-1);
+	document.getElementById('BeginBook').selectedIndex=(bf[0]-1);document.getElementById('FinishBook').selectedIndex=(bf[1]-1);
+}
+</script>
+</form></td></tr><tr><td width=12%></td><td><div id=show class=Result></div>
+<script type="text/javascript">
+	function getQueryStrings(queryString) { 
+		var assoc  = {};
+		var decode = function (s) { return decodeURIComponent(s.replace(/\+/g, " ")); };
+		var keyValues = queryString.split('&'); 
+
+		for(var i in keyValues) { 
+			var key = keyValues[i].split('=');
+			if (key.length > 1) {
+				assoc[decode(key[0])] = decode(key[1]);
+				}
+		} 
+	return assoc; 
+	} 
+	// var _keywords = getQueryStrings()["h"]
+	var queryVars=getQueryStrings(location.search.substring(1));
+	for(var qKey in queryVars) { 
+		eval("var "+qKey+"='"+queryVars[qKey]+"';");
+	} 	
+
+	function sortdt() {
+			var rs = document.getElementById("show").innerHTML.split("<sptag");
+			//delete rs[0];
+			//alert( rs[1]);
+			for (var z=0;z<rs.length ;z++ ) {
+					rs[z]="<sptag"+rs[z];
+			}
+			rs=rs.sort();
+			document.getElementById("show").innerHTML=rs.join("");
+			delete rs;
+	}
+	
+	function searchStringInArray (str, strArray) {
+		for (var j=0; j<strArray.length; j++) {
+			if (strArray[j].match(str)) return j;
+		}
+		return -1;
+	}
+	indexMaker();
+	if (self.location.search.length>1) { 
+		tipitakaSearch();
+	}
+	//เริ่มตัวค้น
+	var alc=0;
+	$(document).ready(function() {
+		$("form#ajaxForm").submit(tipitakaSearch);
+	});
+	
+function tipitakaSearch() {
+
+
+	document.getElementById("show").innerHTML="";
+	if (self.location.search.length>1) {
+		var params = self.location.search.slice(1);
+	} else {
+		var params = decodeURIComponent($(this).find("input, select, textarea").serialize()); // ทำการ get ค่าจาก input ทุกประเภท
+		//self.location.search="?"+params; //ใช้ไม่ได้เพราะจะ reload 
+	}
+	var cmd=$("#cmd").val();
+	var slist=[];
+	//ถ้าไม่ได้ใส่แค่คำค้น
+	if (cmd.indexOf(",")>-1 || cmd[0]=="-") {
+		if(cmd[0]=="-"){
+			var kw="nokw";
+			//หาชื่อหนังสือ
+			if(cmd[1].search(/[ก-ฮA-Za-zเโ]/gi)>-1) {
+				indexMaker();
+				var nm=cmd.slice(1);
+				//console.log($("#show").innerHTML)
+				$("#show").find("li").each(function(z){
+					//console.log(this.innerHTML)
+					if (this.innerHTML.search(nm)==-1)
+						this.style.display="none";
+				});
+			//เปิดหนังสือ
+			} else {
+				var y=cmd.slice(1).split("/");
+				 document.getElementById("show").innerHTML="<a href='TipitakaRead.html?"+y[0]+"&"+y[2]+"&NOKW&0&0&"+(y[1]-1)+"'>คลิกที่นี่ เพื่อไปยัง "+cmd+"</a>";
+			 }
+		} else {
+			cmd=cmd.split(",");
+			var kw=cmd.shift();
+			for(var i in cmd) {
+				var item=cmd[i];
+				if(item.search(/^[0-9\-]+$/gi)>-1){
+					if(item.indexOf("-")==-1){
+						slist.push(parseInt(item));
+					}else {
+						item=item.split("-");
+						for( var y = parseInt(item[0]); y <= parseInt(item[1]); ++y ) 
+							slist.push(y);
+					}
+				} else {
+					slist=slist.concat($.map(TDBn, function(obj, index) {
+						var y=cmd[0].split(" ");
+						var z="^";
+						for(var k=0;k<y.length;k++) {
+							z+="(?=.*"+y[k]+")";
+						}
+						z = new RegExp(z, 'gi');
+						if(TDBn[index].search(z)>-1) {
+							return index;
+						}
+					}));
+				}
+			}
+		}
+	}
+	else { //ถ้ามีแค่คำค้น
+		var kw=cmd;
+		if (getQueryStrings(params)["BeginBook"]>getQueryStrings(params)["FinishBook"]) {
+			alert("เลือกเล่มช่อง 1 ต้องน้อยกว่าช่อง 2 ");
+		}
+		for( var y = getQueryStrings(params)["BeginBook"]; y <= getQueryStrings(params)["FinishBook"]; ++y ) 
+			slist.push(y);
+	}
+	//ทำ kwReg
+	if(kw[0]!='"') {
+		var y=kw.split(" ");
+		var kwReg="^";
+		for(k=0;k<y.length;k++) {
+			kwReg+="(?=.*"+y[k]+")";
+		}
+		kwReg = new RegExp(kwReg, 'gi');
+		kw=y[0];
+	} else {
+		var kwReg=kw.replace(/"/ig,'');
+		kw=kwReg;
+		var y=[kw];
+	}
+	//สองตัวนี้ เอาไว้กัน err เฉยๆ รอเคลียโค้ด กับทำ query string เป็น cmd=value1;value2;value3 
+	BeginBook=1;
+	FinishBook=1;
+	document.getElementById("show").innerHTML+="<p align=right class=td><a href='./TipitakaSearch.html?"+params+"' >[ที่มา]</a></p>";
+	for (var i=0;i<slist.length ;i++ ) {
+		if (params=="" && alc==0) {
+			alert("ท่านยังไม่ได้กรอกคำค้น");
+			alc=1;
+			break;
+		}
+		params=kw+"&"+FinishBook+"&"+BeginBook+"&"+slist[i]+"&"+y.join("|");
+		var URL ='utf/'+slist[i]+'.t'; // ดึงค่า target ออกมา
+		$.ajax({
+			type: "POST", // จะใช้ GET ก็ได้
+			url: URL, // ส่งค่าที่ get มาในที่นี้คือ target.php
+			dataType: "text", // ตรงนี้รับค่าคืนเป็นอะไรซึ่งรับได้หลายชนิดมากๆ ไปอ่าน manual เอา
+			data: params,
+			async: false,
+			cache: false, //สั่งให้ get ค่าที่สดใหม่เสมอไม่ต้องการ browser cache (jQuery 1.2)
+			error: function(e) { // ถ้าเกิด error ขึ้น
+				//alert(i+'ผิดพลาดบางประการ\n'+JSON.stringify(e));
+			},
+			success: function(data) { // ถ้าทำเสร็จจะได้ค่าคืนมา (กรณีมี)
+			z=params.split('&');
+			FinishBook=z[1];
+			BeginBook=z[2];
+			bn=z[3];
+			//kw ที่เป็น regexp แล้ว
+			kw=z[0];
+			//kw ที่มี | กั้นไว้
+			kws=z[4];
+			if (CountBook==undefined) {var CountBook=FinishBook;} CountBook++;
+				data=data.split("\n");
+				var dt='';var term=0;
+				for (var j=0;j<data.length ;j++ ){
+					co=j;
+					data[j]=data[j].replace(/<(?:.|\n)*?>/gm, '').replace(/\s\s+/g, ' ');
+					if (data[j].search(kwReg)>-1) {
+					   if (term==0) {
+						   document.getElementById("show").innerHTML+="<br><div align=left class=BookHead > <b>"+TDBn[bn]+"</b>";
+						   term++;
+					   }
+					if(document.getElementById("paraMode").checked) {
+						var resultData=data[j];
+					}
+					else {
+						zIndex=data[j].search(new RegExp(kw));
+						zStart=(zIndex<40) ? zIndex : zIndex-40;
+						zStop=((data[j].length-zIndex)<40) ? zIndex+kw.length : zIndex+40;
+						var resultData=data[j].substring(zStart,zStop);
+					}
+						//dt+="<a target=_blank href=TipitakaRead.html?bn="+bn+"&page="+j+"&kw="+escape(kws)+"&startNum=0&stopNum=0&co="+co+" ><li>&nbsp;&nbsp;&nbsp;&nbsp;";
+						dt+="<a target=_blank href=TipitakaRead.html?"+bn+"&"+j+"&"+escape(kws)+"&0&0&"+co+" ><li>&nbsp;&nbsp;&nbsp;&nbsp;";
+						var regKws=new RegExp("("+kws+")","gi");
+						dt+=resultData.replace(regKws,'<b><u>$1</u></b>')+"</li></a> ";
+					}
+				}
+				delete data;
+				document.getElementById("show").innerHTML+=dt;
+			}
+		});
+	}
+	return false; // หยุดการทำงานของปุ่ม submit
+}
+
+	
+//สำหรับแปลงระหว่าง thai กับ roman
+/*function conv (op,ip) {
+	words=ip;
+	romChars="…pe… a a ā i ī u ū e o k kh g gh ṅ c ch j jh ñ ṭ ṭh ḍ ḍh ṇ t th d dh n p ph b bh m y r l v s h ḷ ṃ 0 1 2 3 4 5 6 7 8 9".split(" ");
+	thaChars="ฯเปฯ ะ ั า ิ ี ุ ู เ โ ก ข ค ฆ ง จ ฉ ช ฌ ญ ฏ ฐ ฑ ฒ ณ ต ถ ท ธ น ป ผ พ ภ ม ย ร ล ว ส ห ฬ ํ ๐ ๑ ๒ ๓ ๔ ๕ ๖ ๗ ๘ ๙".split(" ");
+	//"ĀāĪīŪūṄṅṂṃÑñṬṭḌḍṆṇḶḷ".split("");
+	
+	if (op=="rom") {
+		words=words.replace(//gi, "ฐ")
+		.replace(//gi, "ญ")
+		.replace(/([เโ])(.)/gi, "$2$1")
+		.replace(/([ก-ฮ])/gi, "$1ะ")
+		.replace(/ะ([ะาิีุูเโ])/gi, "$1")
+		.replace(/อ(.)/gi, "$1")
+		.replace(/ะฺ/gi, "")
+		.replace(/อ/gi, "");
+	} else {
+		words=words.replace(/ (āīūaiueo)/gi, " อ$1")
+		.replace(/(\w)(\w)/gi, "$1ฺ$1")
+		.replace(/(.h?)([eo])/gi, "$2$1")
+		.replace(/อ(.)/gi, "$1")
+		.replace(/ะฺ/gi, "")
+		.replace(/อ/gi, "");
+	}
+
+	for (var i=0;i<romChars.length;i++) {
+		if(op=="tha") {
+			words=words.replace(eval("/"+escapeRegExp(romChars[i])+"/gi"), thaChars[i]);
+		} else words=words.replace(eval("/"+thaChars[i]+"/gi"), romChars[i]);
+	}
+	return words;
+}*/
+	
+	//for (var i=1;i<=217 ;i++ )
+	//สำหรับสร้าง cmd ไว้ไปใช้กับ terminal
+	/*{
+		var t="mkdir '"+('00' + i).slice(-3)+"-"+TDBn[i]+"';";
+		document.getElementById("show").innerHTML+=conv ("rom",t);
+	}*/
+	
+	//สำหรับ gen link
+	/*for (var i=1;i<=876 ;i++ )
+	{
+		var t="<li><a href=TipitakaIndex.html?"+i+"&"+i+"&"+i+"&"+i+" targer=_blank>"+i+" "+TDBn[i]+"</a> <a href=TipitakaRead.html?"+i+"&0&nokw&0&0&0 targer=_blank>[เปิด]</a></li>";
+		document.getElementById("show").innerHTML+=t;
+	}*/
+	
+
+
+</script>
+</td><td width=12%></td></tr></table>
+<table><tbody><tr><td>	</td></tr></tbody></table></td><td class="tdmenblock" width="1%">&nbsp;</td></tr><tr><td class="tdmenblock"  width="1%"></td><td class="tdmenblock" width="98%"></td><td class="tdmenblock"  width="1%"></td></tr></tbody></table>
+</BODY>
+</HTML>

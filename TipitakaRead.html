@@ -1,0 +1,89 @@
+<HTML>
+<HEAD>
+<TITLE>หน้าอ่านพระไตรปิฎก - JS Tipitaka Search engine : โปรแกรมค้นพระไตรปิฎก แบบ javascript</TITLE>
+<link href="border/cssconfig.css" rel="stylesheet" type="text/css">
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<SCRIPT LANGUAGE="JavaScript" src=jquery.js ></SCRIPT>
+<SCRIPT LANGUAGE="JavaScript" src=TipitakaDetail.js ></SCRIPT>
+<link rel="stylesheet" type="text/css" href="./tipitaka-thai.css">
+<style type="text/css">
+body {  margin: 0px  0px; padding: 0px  0px }
+.bd  {font-family : tahoma,MS Sans Serif; color : #000000;}
+td {  margin: 0px  0px; padding: 0px  0px }
+td  {font-family : tahoma,MS Sans Serif; font-size : 14pt; color : #000000;}
+
+</style>
+</HEAD>
+<BODY>
+<div id="load" valign="middle" align="center" style="display:none"></div><input id="standin" value="standin" type="hidden"><br><table align="center" border="0" cellpadding="0" cellspacing="0" width="98%"><tbody><tr><td class="tdmenblock" border="0"></td><td class="tdmenblock" border="0"  width="98%"></td><td class="tdmenblock" border="0" width="1%"></td></tr><tr><td class="tdmenblock" border="0" width="1%">&nbsp;</td><td class="tdmenblock" border="0" width="98%">	<div align="center"><table align="center" border="0" cellpadding="0" cellspacing="0" width="80%"><tbody><tr><td><p align="center"><a href="http://www.satemy.com" target="_parent">   </a></p>
+	</td></tr></tbody></table>
+<input type=hidden id=pg >
+<div align=center><table><tr><td ><div align=center class=bd>
+<label title="เปิดหน้าด้านบน-ล่างเพิ่มอีก ตามจำนวนหน้าที่กรอกในช่อง เช่น อยู่ที่ หน้า 10 ต้องการดูตั้งแต่ 9 ถึง 11 ให้กรอก 1 ทั้ง 2 ช่อง แล้วกดปุ่ม 'เพิ่ม'">  </label><input type=text  size=1 value=0 id=startNum onblur="StartStop(document.getElementById('startNum').value,document.getElementById('stopNum').value,document.getElementById('pg').value);" > - <input type=text  size=1 value=0 id=stopNum onblur="StartStop(document.getElementById('startNum').value,document.getElementById('stopNum').value,document.getElementById('pg').value);" > <span id=Menu></span> | <a href=# id=option2 onclick="$(this).hide();$('#option1').show()" title="เลือกจำนวนหนังสือแบบละเอียด" >[+]</a>
+<span id=option1 style="display:none;" ><a href=# onclick="$('#option1').hide();$('#option2').show();" title="ปิดช่องเลือกจำนวนหนังสือแบบละเอียด" >[--]</a><br /><input type=button value='[ออกเสียง]' onclick="paliConv(document.getElementById('chChar')[document.getElementById('chChar').selectedIndex].value);window.open('https://translate.google.com/?source=gtx_m#mr/en/'+decodeURIComponent($('#show').text().replace(/ /g,'+'),'_blank'));"/> | <select name="chChar" id="chChar" onchange="if (this.selectedIndex) paliConv(this[this.selectedIndex].value);">
+    <option value="-1">[แบบอักษร]</option>
+    <option value="tha">ไทย</option> 
+    <option value="rom">โรมัน</option>
+    <option value="dev">เทวนาครี</option>
+</select> | <a href=#  onclick='code=document.getElementById("code");code.style.display="";code.innerHTML=document.getElementById("show").innerHTML' ondblclick='code.style.display="none";'>ดูโค้ด</a> | <a href="tools/paliThaiRoman.html" target=_blank >Convertor</a> | <a href="tools/accesstoinsight.org/start.html" target=_blank >TPK Eng</a><br/><textarea  cols=50% rows=10 id=code style="display:none;"></textarea></span>
+<img src=border/stopload.gif onload=load('1');>
+<div id=quote></div>
+</div>
+<div id=show></div>
+<SCRIPT LANGUAGE="JavaScript">
+data=unescape(self.location.search).slice(1).split("&");
+bn=data[0];
+if(data[2][0]=="|") //แก้ปัญหา html โผล่ เพราะ regex
+	data[2]=data[2].slice(1);
+params=parseInt(data[0])+"&"+data[2]+"&"+data[3]+"&"+data[4]+"&"+parseInt(data[5])+"&"+data[6]+"&"+data[7];
+function StartStop(start,stop,pg) {
+	document.getElementById('Menu').innerHTML="<a href=TipitakaRead.html?"+data[0]+"&"+data[1]+"&"+escape(data[2])+"&"+(parseInt(start))+"&"+(parseInt(stop))+"&"+(parseInt(data[5]))+" >เพิ่ม</a> | <a href=TipitakaRead.html?"+data[0]+"&"+(parseInt(data[1])-1)+"&"+escape(data[2])+"&"+(start)+"&"+(stop)+"&"+(parseInt(data[5])-1)+" >ก่อนนี้</a> | <a href=TipitakaRead.html?"+data[0]+"&"+(parseInt(data[1])+1)+"&"+escape(data[2])+"&"+(start)+"&"+(stop)+"&"+(parseInt(data[5])+1)+" >ถัดไป</a> | <a href=TipitakaIndex.html?"+data[0]+"&"+data[0]+" >สารบัญ</a> | <a href=TipitakaSearch.html >ค้นหา</a> ";
+	document.getElementById('bottomMenu').innerHTML=document.getElementById('Menu').innerHTML;
+}
+		//var params = $(this).find("input, select, textarea").serialize(); // ทำการ get ค่าจาก input ทุกประเภท
+		var URL ='utf/'+bn+'.t'; // ดึงค่า target ออกมา
+		$.ajax({
+			type: "POST", // จะใช้ GET ก็ได้
+			url: URL, // ส่งค่าที่ get มาในที่นี้คือ target.php
+			dataType: "text", // ตรงนี้รับค่าคืนเป็นอะไรซึ่งรับได้หลายชนิดมากๆ ไปอ่าน manual เอา
+                        data: params,
+			cache: false, //สั่งให้ get ค่าที่สดใหม่เสมอไม่ต้องการ browser cache (jQuery 1.2)
+			error: function() { // ถ้าเกิด error ขึ้น
+				alert('ผิดพลาดบางประการ');
+			},
+			success: function(data) { // ถ้าทำเสร็จจะได้ค่าคืนมา (กรณีมี)
+				data=data.toLowerCase();
+				var sp=params.split("&");
+				var bn=parseInt(sp[0]);
+				var kw=sp[1];
+				var startNum=parseInt(sp[2]);
+				var stopNum=parseInt(sp[3]);
+				var page=parseInt(sp[4]);
+				//var HLB=(sp[5].length==0)? "NoHLB":sp[5];
+				//var HLE=(sp[6].length==0)? "NoHLE":sp[6];
+				data=data.split("\n");
+				for(var j=0;j<data.length;j++) {
+					//getTitle(data[j]);
+					if(j==page || (j>=(page-startNum) && j<=page+stopNum)) {
+						var kws=new RegExp("("+kw+")","gi");
+						document.getElementById("show").innerHTML+="<label title='page "+(j+1)+"'><p class='bodytext' >"+data[j].replace(kws,"<b><u>$1</u></b>")+"</label>";
+						try{hasTitle} catch(e){document.title=TDBn[bn]+' '+(j-startNum+1)+"-"+(j+stopNum+1)+' ปณฺณปสฺเส '+curTitle;hasTitile=true;}
+						curPageTitle=curTitle;
+					}
+				}
+			}
+		});
+		var sp=self.location.search.slice(1).split("&");
+		var bn=parseInt(sp[0]);
+		var startNum=parseInt(sp[2]);
+		var stopNum=parseInt(sp[3]);
+		var page=parseInt(data[5])+1;
+		document.getElementById("quote").innerHTML="<div align=right class=td>จาก : <input type=text size=30 style='text-align:right' id=comefrom value='"+TDBn[bn]+" หน้า "+page+" "+curPageTitle+"'/>  <input type=text size=15 id=comefrom value=TipitakaRead.html"+self.location.search+" /></p>";
+</SCRIPT>
+<div id="bottomMenu" align="center" ></div>
+<img src=border/stopload.gif onload=StartStop(0,0); >
+<input type=hidden name=page id=page value="" >
+</td></tr></table></div>
+<table><tbody><tr><td>	</td></tr></tbody></table></td><td class="tdmenblock" width="1%">&nbsp;</td></tr><tr><td class="tdmenblock"  width="1%"></td><td class="tdmenblock" width="98%"></td><td class="tdmenblock"  width="1%"></td></tr></tbody></table>
+</BODY>
+</HTML>

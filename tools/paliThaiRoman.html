@@ -1,0 +1,131 @@
+
+<!-- saved from url=(0059)http://ballwarapol.github.io/pali-editor/paliThaiRoman.html -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+</head><body><table width="100%" border="1" bordercolor="#000000" cellpadding="4" cellspacing="0">
+	<colgroup><col width="256*">
+	</colgroup><tbody><tr>
+		<td width="100%" valign="TOP">
+			<p align="center"><b>โปรแกรมแปลงระหว่างบาลีอักษรโรมัน กับ อักษรไทย<br></b><br>
+			</p>
+		</td>
+	</tr>
+	<tr>
+		<td width="100%" valign="TOP" align="center">
+            <p><i>กรอกข้อความในช่องด้านล่าง</i>
+            </p>
+			<p>
+            <textarea cols="100" rows="18" id="inp"></textarea>
+			</p>
+		</td>
+	</tr>
+		<tr>
+		<td width="100%" valign="TOP" align="center">
+            <p><i><input type="button" value="Roman" onclick="conv(&quot;rom&quot;)"> 
+<input type="button" value="Thai" onclick="conv(&quot;tha&quot;)"> <input type="button" value="Devanagiri" onclick="conv(&quot;dev&quot;)"> </i>
+            </p>
+			<p>
+            <textarea cols="100" rows="18" id="outp"></textarea>
+			</p>
+		</td>
+	</tr>
+</tbody></table>
+
+<script>
+function conv (des) {
+	words=document.getElementById("inp").value;	
+	words=paliConv(des, words)
+	document.getElementById("outp").value=words;
+}
+	
+function paliConv (des, pali) {//pali=บาลีอักษรใดๆ, des=ภาษาเป้าหมาย มี 4 โหมด tha, dev, rom, paliEasy
+		var pali=pali.replace(/\<.*?\>|\[\D.*?\]|‘|’|\//gi,"");
+		var romChars="…pe…| a| a| ā| i| ī| u| ū| e| o|a|a|ā|i|ī|u|ū|e|o|kh|k|gh|g|ṅ|ch|c|jh|j|ñ|ṭh|ṭ|ḍh|ḍ|ṇ|th|t|dh|d|n|ph|p|bh|b|m|y|r|l|v|s|h|ḷ|ṃ";
+		var thaChars="ฯเปฯ| ะ| ั| า| ิ| ี| ุ| ู| เ| โ|ะ|ั|า|ิ|ี|ุ|ู|เ|โ|ข|ก|ฆ|ค|ง|ฉ|จ|ฌ|ช|ญ|ฐ|ฏ|ฒ|ฑ|ณ|ถ|ต|ธ|ท|น|ผ|ป|ภ|พ|ม|ย|ร|ล|ว|ส|ห|ฬ|ํ";
+		var devChars="…पे॰…| अ| अ| आ| इ| ई| उ| ऊ| ए| ओ|अ|अ|ा|ि|ी|ु|ू|े|ो|ख|क|घ|ग|ङ|छ|च|झ|ज|ञ|ठ|ट|ढ|ड|ण|थ|त|ध|द|न|फ|प|भ|ब|म|य|र|ल|व|स|ह|ळ|ं";
+		if(des=="tha"){
+			desChars=thaChars;
+		} else if(des=="dev"){
+			desChars=devChars;
+		}else if (des=="rom") {
+			desChars=romChars;
+		}else if (des=="paliEasy") {
+			desChars=thaChars;
+		}
+		//"ĀāĪīŪūṄṅṂṃÑñṬṭḌḍṆṇḶḷ".split("");
+		//เซ็ตแฟล็ก des ว่าภาษาอะไร
+		//แปลงทุกอย่างในรูปแบบไทย แล้วค่อยแปลงจากไทยไปที่ภาษาที่ต้องการ
+		var srcChars="";
+		if (pali.search(new RegExp(thaChars))>-1){
+			srcChars=thaChars;
+			/*บรรทัดแรกแก้ตัวควบกล้ำ ตามแบบการออกเสียง ที่ใช้ในไทย
+			แต่ความจริงแล้วตามลำดับอักษรบาลี ควรเป็น:
+			pali=pali.replace(/([เโ])(.\ฺ)/gi, "$2$1")*/
+			pali=pali.replace(/([เโ].)\ฺ(.)/gi, "$1$2\ฺ")  
+			.replace(/([เโ])(.)/gi, "$2$1")
+			.replace (/([ก-ฮ])/g,"$1ะ")
+			.replace (/ะ([ะาิีุูึเโฺํ])/g,"$1")
+			.replace (/ะ([ก-ฮ])\ฺ/g,"ั$1")
+			.replace (/\ฺ/g,"")
+			.replace (/ึ/g,"ิง")
+			.replace (/ุํ/g,"ุง")
+			.replace (/ํ/g,"ัง")
+			.replace(/(.)(โ|เ)/g,"$2$1");
+			//แปลงบาลีไทยเป็นบาลีไทยอ่านง่าย
+			if (des=="paliEasy") {
+				return pali.replace (//g,"ญ").replace (//g,"ฐ");
+			}
+			pali=pali.replace(/อ(.)/gi, "$1")
+			.replace(/ะฺ/gi, "")
+			.replace(/อ/gi, "");
+		} else if (pali.search(new RegExp(devChars))>-1){
+			srcChars=devChars;
+			pali=pali.replace(/([क-ह])/gi, "$1अ")
+			.replace(/अ([अािीुूेैो])/gi, "$1")
+			.replace(/अ्/gi, "")
+			//.replace(/(\w)(\w)/gi, "$1्$1");
+		}  else if (pali.search(new RegExp(romChars))>-1){
+			srcChars=romChars;
+		}
+		if (srcChars==desChars) return 0;
+		srcChars=srcChars.split("|");
+		desChars=desChars.split("|");
+		thaChars=thaChars.split("|");
+		//แปลงเป็นไทย
+		for (var i=0;i< thaChars.length;i++) {
+			pali=pali.replace(eval("/"+escapeRegExp(srcChars[i])+"/gi"), thaChars[i]);
+		}
+		pali=pali.replace("]","] ")
+		pali=pali.replace(/ฯ/gi,"ฯ ")
+		//เมื่อเป็น ไทยหมดแล้ว 
+		//เตรียมแปลงจากไทย ไปภาษาเป้าหมาย
+		if (des=="tha") {
+			pali=pali.replace(/([ก-ฮ])([ก-ฮ])/gi, "$1ฺ$2")
+			.replace(/([ \n])([ะาิีุูเโ])/gi, "$1อ$2")
+			.replace(/([ะาิีุูเโ])([ะาิีุูเโ])/gi, "$1อ$2")
+			.replace(/([^ะาิีุูเโ])([เโ])/gi, "$2$1")
+			.replace(/ะ/gi, "");
+		} else if (des=="dev") {
+			pali=pali.replace(/([ก-ฮ])([ก-ฮ])/gi, "$1्$2")
+			.replace(/ ะ/gi, " अ")
+			.replace(/ะ/gi, "")
+			.replace(/ฺ/gi, "्");
+		} else if (des=="rom") {
+			console.log(pali)
+			pali=pali.replace(/([เโ])(.)/gi, "$2$1");	
+		}
+		//แปลงเป็นภาษาอื่น
+		for (var i=0;i<thaChars.length;i++) {
+			pali=pali.replace(eval("/"+escapeRegExp(thaChars[i])+"/gi"), desChars[i]);
+		}
+		return pali.replace(/ฯ/gi, ".");
+}
+
+function escapeRegExp(str) {
+  return str.replace(/[\-\[\]\/\{\}\(\)\*\+\?\.\\\^\$\|][NnMmTtDdNnLl]/gi, "\\$&");
+}
+function unescapeRegExp(str) {
+  return str.replace(/\\/gi, "");
+}
+</script>
+</body></html>
